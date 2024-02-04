@@ -24,7 +24,7 @@ jobs:
       - name: Configure deployment secrets
         run: |
           mkdir -p k8s/
-          cat <<EOF > ~/k8s/1-secret.yaml
+          cat <<EOF > k8s/1-secret.yaml
           apiVersion: v1
           kind: Secret
           metadata:
