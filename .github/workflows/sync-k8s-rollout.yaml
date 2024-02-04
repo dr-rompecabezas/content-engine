@@ -1,27 +1,43 @@
 name: Sync K8s Rollout
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - 'k8s/**'
+      - .github/workflows/sync-k8s-rollout.yaml
   workflow_dispatch:
 
 jobs:
-    k8s_apply:
-        runs-on: ubuntu-latest
-        env:
-            DEPLOYMENT_NAME: ${{ secrets.DEPLOYMENT_NAME || 'content-engine' }}
-        steps:
-            - uses: actions/checkout@v4
-            - name: Set up kubectl
-              uses: azure/setup-kubectl@v3
-            - name: Configure kubectl
-              run: |
-                mkdir -p ~/.kube
-                echo "${{ secrets.KUBE_CONFIG }}" > ~/.kube/config
-            - name: Apply k8s manifests
-              run: |
-                kubectl apply -f k8s/
-            - name: Trigger k8s deployment rollout
-              run: |
-                kubectl rollout restart deployments/${{ env.DEPLOYMENT_NAME }}
-            - name: Verify k8s deployment to rollout
-              run: |
-                kubectl rollout status deployments/${{ env.DEPLOYMENT_NAME }}
+  k8s_apply:
+    runs-on: ubuntu-latest
+    env:
+      DEPLOYMENT_NAME: ${{ secrets.DEPLOYMENT_NAME || 'content-engine' }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v3
+      - name: Configure kubectl
+        run: |
+          mkdir -p ~/.kube
+          echo "${{ secrets.KUBE_CONFIG }}" > ~/.kube/config
+      - name: Configure deployment secrets
+        run: |
+          mkdir -p ~/k8s
+          cat EOF<<EOF > ~/k8s/1-secret.yaml
+          apiVersion: v1
+          kind: Secret
+          metadata:
+            name: content-engine-secret
+          stringData:
+            DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+          EOF
+      - name: Apply k8s manifests
+        run: |
+          kubectl apply -f k8s/
+      - name: Trigger k8s deployment rollout
+        run: |
+          kubectl rollout restart deployments/${{ env.DEPLOYMENT_NAME }}
+      - name: Verify k8s deployment to rollout
+        run: |
+          kubectl rollout status deployments/${{ env.DEPLOYMENT_NAME }}
