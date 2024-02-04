@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: content-engine
+spec:
+  replicas: 10
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+    spec:
+      containers:
+      - name: content-engine-container
+        image: felavid/content-engine:latest
+        env: 
+        - name: PORT
+          value: "8080"
+        ports:
+        - containerPort: 8080
