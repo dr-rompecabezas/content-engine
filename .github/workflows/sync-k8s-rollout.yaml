@@ -23,8 +23,8 @@ jobs:
           echo "${{ secrets.KUBE_CONFIG }}" > ~/.kube/config
       - name: Configure deployment secrets
         run: |
-          mkdir -p ~/k8s
-          cat EOF<<EOF > ~/k8s/1-secret.yaml
+          mkdir -p k8s/
+          cat <<EOF > ~/k8s/1-secret.yaml
           apiVersion: v1
           kind: Secret
           metadata:
