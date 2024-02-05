@@ -1,2 +1,6 @@
 Django>=4.2,<5.0
 gunicorn
+python-decouple
+dj-database-url
+psycopg
+psycopg-binary
