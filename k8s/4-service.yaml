@@ -5,7 +5,8 @@ metadata:
 spec:
   selector:
     app: web
-  type: LoadBalancer
+  # type: LoadBalancer # For cloud providers. Exposes the service to the internet. Known as Node Balancer in Akamai Linode.
+  type: ClusterIP # Private IP. Exposes the service on a cluster-internal IP. Makes the service only reachable from within the cluster.
   ports:
     - name: http
       protocol: TCP
