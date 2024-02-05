@@ -166,4 +166,4 @@ cython_debug/
 
 # Kubernetes
 .kube/
-k8s/*secret.yaml
+k8s/**/*secret.yaml
