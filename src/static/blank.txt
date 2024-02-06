@@ -1,1 +1,0 @@
-Keep dir empty to prevent collectstatic error in CI.

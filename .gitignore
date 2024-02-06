@@ -170,3 +170,6 @@ k8s/**/*secret.yaml
 
 # Staticfiles
 staticfiles/
+
+# Node
+node_modules/
