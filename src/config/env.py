@@ -4,7 +4,7 @@ from functools import lru_cache
 from decouple import Config, RepositoryEnv
 
 
-BASE_DIR = pathlib.Path(__file__).parent.parent  # src/
+BASE_DIR = pathlib.Path(__file__).resolve(strict=True).parent.parent  # src/
 ROOT_DIR = BASE_DIR.parent  # project dir
 ENV_FILE_NAME = os.getenv("ENV_FILE") or ".env"
 ENV_BASE_DIR = BASE_DIR / ENV_FILE_NAME
