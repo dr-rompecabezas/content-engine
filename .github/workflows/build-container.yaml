@@ -29,6 +29,15 @@ jobs:
     
     steps:
     - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+    - name: Install requirements and collect static files
+      run: |
+        cd ${{ env.BASE_DIR }}
+        python -m pip install --upgrade pip
+        python -m pip install -r requirements.txt
+        python manage.py collectstatic --no-input
 
     - name: Setup Pack CLI
       uses: buildpacks/github-actions/setup-pack@v5.0.0
