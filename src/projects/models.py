@@ -7,7 +7,7 @@ User = settings.AUTH_USER_MODEL
 
 class Project(models.Model):
     title = models.CharField(max_length=255, unique=True)
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(null=True)
     owner = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
     active = models.BooleanField(default=True)
     created = models.DateTimeField(auto_now_add=True)
