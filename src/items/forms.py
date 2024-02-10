@@ -7,3 +7,9 @@ class ItemCreateForm(forms.ModelForm):
     class Meta:
         model = Item
         fields = ["title", "description"]
+
+
+class ItemUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Item
+        fields = ["title", "description"]
