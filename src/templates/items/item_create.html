@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Create a new item for project {{ request.project }}</h1>
+    <form class="tw-form" method="post">
+        {% csrf_token %}
+        {{ form.as_div }}
+        <div>
+            <button type="submit">Create</button>
+        </div>
+    </form>
+{% endblock content %}

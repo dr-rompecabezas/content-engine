@@ -7,6 +7,7 @@ User = settings.AUTH_USER_MODEL
 
 class AnonymousProject():
     value = None
+    is_activated = False
 
 
 class Project(models.Model):
@@ -24,3 +25,7 @@ class Project(models.Model):
         if not self.pk:
             self.slug = slugify(self.title)
         super().save(*args, **kwargs)
+
+    @property
+    def is_activated(self):
+        return True
