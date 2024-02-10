@@ -5,6 +5,10 @@ from django.utils.text import slugify
 User = settings.AUTH_USER_MODEL
 
 
+class AnonymousProject():
+    value = None
+
+
 class Project(models.Model):
     title = models.CharField(max_length=255, unique=True)
     slug = models.SlugField(unique=True)
