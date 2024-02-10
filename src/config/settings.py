@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     "landing",
     "users",
     "projects",
+    "items",
 ]
 
 MIDDLEWARE = [
