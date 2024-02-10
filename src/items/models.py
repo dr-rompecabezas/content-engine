@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.db import models
+from django.urls import reverse
 
 from projects.models import Project
 
@@ -17,3 +18,7 @@ class Item(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return reverse("items:detail", kwargs={"id": self.id})
+    
