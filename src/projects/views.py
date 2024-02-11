@@ -1,6 +1,9 @@
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect, render, get_object_or_404
 from django.contrib import messages
-from django.shortcuts import redirect
 from django.urls import reverse
+
+from .forms import ProjectCreateForm, ProjectUpdateForm
 from .models import Project
 
 
@@ -26,3 +29,60 @@ def activate_project_view(request, slug=None):
 def deactivate_project_view(request, slug=None):
     delete_project_from_session(request)
     return redirect("/")
+
+
+@login_required
+def project_list_view(request):
+    projects = Project.objects.filter(owner=request.user)
+    return render(request, "projects/list.html", {"projects": projects})
+
+
+@login_required
+def project_detail_view(request, slug=None):
+    project = get_object_or_404(Project, slug=slug, owner=request.user)
+    return render(request, "projects/detail.html", {"project": project})
+
+
+@login_required
+def project_create_view(request):
+    if not request.project.is_activated:
+        return render(request, "projects/activated.html", {})
+    form = ProjectCreateForm(request.POST or None)
+    if form.is_valid():
+        project = form.save(commit=False)
+        project.project = request.project
+        project.created_by = request.user
+        project.save()
+        return redirect(project.get_absolute_url())
+    context = {
+        "form": form
+    }
+    return render(request, "projects/create.html", context)
+
+
+@login_required
+def project_update_view(request, slug=None):
+    project = get_object_or_404(Project, slug=slug)
+    form = ProjectUpdateForm(request.POST or None, instance=project)
+    if form.is_valid():
+        project = form.save(commit=False)
+        project.last_modified_by = request.user
+        project.save()
+        return redirect(project.get_absolute_url())
+    context = {
+        "project": project,
+        "form": form,
+    }
+    return render(request, "projects/update.html", context)
+
+
+@login_required
+def project_delete_view(request, slug=None):
+    project = get_object_or_404(Project, slug=slug, owner=request.user)
+    if request.method == "POST":
+        project.delete()
+        return redirect("projects:list")
+    context = {
+        "project": project,
+    }
+    return render(request, "projects/delete.html", context)
