@@ -10,7 +10,7 @@ User = settings.AUTH_USER_MODEL
 class Item(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField(blank=True)
-    project = models.ForeignKey(Project, on_delete=models.CASCADE)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, related_name="items")
     created = models.DateTimeField(auto_now_add=True)
     created_by = models.ForeignKey(User, related_name="items_created", on_delete=models.SET_NULL, null=True)
     modified = models.DateTimeField(auto_now=True)
