@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h1>Are you sure you want to delete item {{ item }} for project {{ request.project }}</h1>
+    <h1>Are you sure you want to delete item {{ item }} for project {{ request.project }}?</h1>
     {% include "items/snippets/form.html" with form=form btn_label="Yes, delete" delete=True %}
 {% endblock content %}
