@@ -20,7 +20,7 @@ def item_detail_view(request, id=None):
 @login_required
 def item_create_view(request):
     if not request.project.is_activated:
-        return render(request, "projects/activated.html", {})
+        return render(request, "projects/required.html", {})
     form = ItemCreateForm(request.POST or None)
     if form.is_valid():
         item = form.save(commit=False)
