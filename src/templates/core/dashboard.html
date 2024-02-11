@@ -1,4 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
-    {% include "items/table.html" with items=items %}
-{% endblock %}
+    <div hx-get="{% url 'items:list' %}" hx-trigger="load">
+        Loading...
+    </div>
+    <a href="{% url 'items:create' %}">Create new item</a>
+{% endblock content %}
