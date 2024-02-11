@@ -46,8 +46,6 @@ def project_detail_view(request, slug=None):
 
 @login_required
 def project_create_view(request):
-    if not request.project.is_activated:
-        return render(request, "projects/activated.html", {})
     form = ProjectCreateForm(request.POST or None)
     if form.is_valid():
         project = form.save(commit=False)
