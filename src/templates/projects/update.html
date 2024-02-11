@@ -1,0 +1,6 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Update project {{ project }}</h1>
+    {% include "projects/snippets/form.html" with form=form btn_label="Save" %}
+{% endblock content %}
