@@ -28,7 +28,7 @@ def activate_project_view(request, slug=None):
 
 def deactivate_project_view(request):
     delete_project_from_session(request)
-    messages.success(request, "Project deactivated")
+    messages.error(request, "Project deactivated")
     return redirect("/")
 
 
