@@ -34,6 +34,9 @@ class Project(models.Model):
     
     def get_absolute_url(self):
         return reverse("projects:detail", kwargs={"slug": self.slug})
+    
+    def get_activate_url(self):
+        return reverse("projects:activate", kwargs={"slug": self.slug})
 
     @property
     def is_activated(self):
