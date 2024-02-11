@@ -10,7 +10,7 @@ from .models import Project
 def delete_project_from_session(request):
     if "project_slug" in request.session:
         del request.session["project_slug"]
-    return redirect("/")
+    return redirect(reverse("projects:list"))
 
 
 def activate_project_view(request, slug=None):
@@ -29,7 +29,7 @@ def activate_project_view(request, slug=None):
 def deactivate_project_view(request):
     delete_project_from_session(request)
     messages.error(request, "Project deactivated")
-    return redirect("/")
+    return redirect(reverse("projects:list"))
 
 
 @login_required
