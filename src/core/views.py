@@ -6,8 +6,7 @@ from projects.decorators import project_required
 
 @project_required
 def dashboard(request):
-    items = Item.objects.filter(project=request.project)
-    return render(request, "core/dashboard.html", {"items": items})
+    return render(request, "core/dashboard.html")
 
 
 def home(request):
