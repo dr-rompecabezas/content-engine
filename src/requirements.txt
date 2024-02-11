@@ -5,3 +5,4 @@ dj-database-url
 psycopg
 psycopg-binary
 whitenoise
+django-htmx
