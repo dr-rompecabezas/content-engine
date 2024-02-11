@@ -1,10 +1,13 @@
 from django.core.exceptions import ValidationError
 
+
 def validate_project_title(value):
     if len(value) < 3:
         raise ValidationError("Title must be at least 3 characters long")
     if (value).strip().lower() == "create":
         raise ValidationError("The project title may not be 'create'")
+    if (value).strip().lower() == "deactivate":
+        raise ValidationError("The project title may not be 'deactivate'")
 
 
 def validate_project_description(value):
@@ -15,3 +18,5 @@ def validate_project_description(value):
 def validate_project_slug(value):
     if value.lower() == "create":
         raise ValidationError("Slug may not be 'create'")
+    if value.lower() == "deactivate":
+        raise ValidationError("Slug may not be 'deactivate'")
