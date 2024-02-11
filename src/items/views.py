@@ -11,7 +11,10 @@ from .models import Item
 @login_required
 def item_list_view(request):
     items = Item.objects.filter(project=request.project)
-    return render(request, "items/list.html", {"items": items})
+    template_name = "items/list.html"
+    if request.htmx:
+        template_name = "items/snippets/table.html"
+    return render(request, template_name, {"items": items})
 
 
 @project_required
