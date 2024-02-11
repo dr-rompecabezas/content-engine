@@ -22,12 +22,13 @@ def activate_project_view(request, slug=None):
         messages.error(request, "Project could not be activated")
         delete_project_from_session(request)
     request.session["project_slug"] = slug
-    messages.success(request, "Project activated")
-    return redirect("/")
+    messages.success(request, f"Project {project.title} activated")
+    return redirect(reverse("projects:detail", kwargs={"slug": slug}))
 
 
-def deactivate_project_view(request, slug=None):
+def deactivate_project_view(request):
     delete_project_from_session(request)
+    messages.success(request, "Project deactivated")
     return redirect("/")
 
 
@@ -50,7 +51,7 @@ def project_create_view(request):
     form = ProjectCreateForm(request.POST or None)
     if form.is_valid():
         project = form.save(commit=False)
-        project.project = request.project
+        project.owner = request.user
         project.created_by = request.user
         project.save()
         return redirect(project.get_absolute_url())
@@ -80,6 +81,9 @@ def project_update_view(request, slug=None):
 def project_delete_view(request, slug=None):
     project = get_object_or_404(Project, slug=slug, owner=request.user)
     if request.method == "POST":
+        if project.items.exists():
+            messages.error(request, "Project has items and cannot be deleted")
+            return redirect(project.get_absolute_url())
         project.delete()
         return redirect("projects:list")
     context = {
