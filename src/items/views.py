@@ -1,26 +1,29 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render, get_object_or_404
 
+from projects.decorators import project_required
+
 from .forms import ItemCreateForm, ItemUpdateForm
 from .models import Item
 
 
+@project_required
 @login_required
 def item_list_view(request):
     items = Item.objects.filter(project=request.project)
     return render(request, "items/list.html", {"items": items})
 
 
+@project_required
 @login_required
 def item_detail_view(request, id=None):
     item = get_object_or_404(Item, id=id, project=request.project)
     return render(request, "items/detail.html", {"item": item})
 
 
+@project_required
 @login_required
 def item_create_view(request):
-    if not request.project.is_activated:
-        return render(request, "projects/required.html", {})
     form = ItemCreateForm(request.POST or None)
     if form.is_valid():
         item = form.save(commit=False)
@@ -34,6 +37,7 @@ def item_create_view(request):
     return render(request, "items/create.html", context)
 
 
+@project_required
 @login_required
 def item_update_view(request, id=None):
     item = get_object_or_404(Item, id=id, project=request.project)
@@ -50,6 +54,7 @@ def item_update_view(request, id=None):
     return render(request, "items/update.html", context)
 
 
+@project_required
 @login_required
 def item_delete_view(request, id=None):
     item = get_object_or_404(Item, id=id, project=request.project)
