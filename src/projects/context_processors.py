@@ -8,6 +8,5 @@ def user_projects_context(request):
     if request.user.is_authenticated:
         username = request.user.username
         user_projects = project_cache.get_user_projects(username=username)
-        print(user_projects)
         return {'user_projects': user_projects}
     return {'user_projects': Project.objects.none()}
