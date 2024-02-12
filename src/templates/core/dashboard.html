@@ -3,5 +3,7 @@
     <div hx-get="{% url 'items:list' %}" hx-trigger="load">
         Loading...
     </div>
-    <a href="{% url 'items:create' %}">Create new item</a>
+    <div id="hx-item-create">
+        <button hx-target="#hx-item-create" hx-swap="innerHTML" hx-get="{% url 'items:create' %}" hx-trigger="click" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Create item</button>
+    </div>
 {% endblock content %}

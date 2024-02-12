@@ -1,5 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render, get_object_or_404
+from django.urls import reverse
+from django_htmx.http import HttpResponseClientRefresh
 
 from projects.decorators import project_required
 
@@ -27,17 +29,25 @@ def item_detail_view(request, id=None):
 @project_required
 @login_required
 def item_create_view(request):
+    template_name = "items/create.html"
+    if request.htmx:
+        template_name = "items/snippets/form.html"
     form = ItemCreateForm(request.POST or None)
     if form.is_valid():
         item = form.save(commit=False)
         item.project = request.project
         item.created_by = request.user
         item.save()
+        if request.htmx:
+            return HttpResponseClientRefresh()
         return redirect(item.get_absolute_url())
+    action_url = reverse("items:create")
     context = {
-        "form": form
+        "form": form,
+        "btn_label": "Create item",
+        "action_url": action_url,
     }
-    return render(request, "items/create.html", context)
+    return render(request, template_name, context)
 
 
 @project_required
